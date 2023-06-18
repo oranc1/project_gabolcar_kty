@@ -82,36 +82,67 @@
 					</div>
 				</dd>
 			</dl>
+			
 		</div>
 		
-		
+		<!-- 차량 소개에서 차량 목록을 사용자가 차종에 따라 필터링하는 기능 구현 -->
 		<script type="text/javascript">
+// 		selectCarTypeCheckboxes: input[name='selectCarType']에 해당하는 모든 체크박스를 선택하여 가져온다.
 		  const selectCarTypeCheckboxes = document.querySelectorAll("input[name='selectCarType']");
-
+		
+//		selectedCarTypes: 선택된 차종을 저장할 빈 배열을 선언
 		  let selectedCarTypes = [];
+		
+		  const selectFuelCheckboxes = document.querySelectorAll("input[name='selectFuel']"); // input[name='selectFuel']에 해당하는 모든 체크박스를 선택하여 가져온다.
 
+		  let selectedFuelTypes = []; //	selectedFuelTypes: 선택된 연료 종류를 저장할 빈 배열을 선언
+
+		  selectFuelCheckboxes.forEach((checkbox) => {
+		    checkbox.addEventListener("change", (e) => {
+		      if (e.target.checked) {
+		        selectedFuelTypes.push(e.target.value);
+		      } else {
+		        selectedFuelTypes = selectedFuelTypes.filter((type) => type !== e.target.value);
+		      }
+
+		      filterCarList();
+		    });
+		  });
+		
+		// filterCarList 함수: 차량 목록을 필터링하는데 사용되는 함수
 		  function filterCarList() {
 		    const carItems = document.getElementsByClassName("car-item");
 
 		    [...carItems].forEach((item) => {
-		      let shouldDisplay = false;
+		    	  let shouldDisplayByCarType = false;
+		    	  let shouldDisplayByFuelType = false;
 
-		      if (selectedCarTypes.length === 0) {
-		        shouldDisplay = true;
-		      } else {
-		        selectedCarTypes.forEach((carType) => {
-		        	 if (item.classList.contains(carType.toLowerCase().replace(' ', '_'))) {
-		            shouldDisplay = true;
-		          }
-		        });
-		      }
+		    	  if (selectedCarTypes.length === 0) {
+		    	    shouldDisplayByCarType = true;
+		    	  } else {
+		    	    selectedCarTypes.forEach((carType) => {
+		    	      if (item.classList.contains(carType.toLowerCase().replace(' ', '_'))) {
+		    	        shouldDisplayByCarType = true;
+		    	      }
+		    	    });
+		    	  }
 
-		      if (shouldDisplay) {
-		        item.style.display = "block";
-		      } else {
-		        item.style.display = "none";
-		      }
-		    });
+		    	  if (selectedFuelTypes.length === 0) {
+		    	    shouldDisplayByFuelType = true;
+		    	  } else {
+		    	    selectedFuelTypes.forEach((fuelType) => {
+		    	      if (item.classList.contains(fuelType)) {
+		    	        shouldDisplayByFuelType = true;
+		    	      }
+		    	    });
+		    	  }
+
+		    	  if (shouldDisplayByCarType && shouldDisplayByFuelType) {
+		    	    item.style.display = "block";
+		    	  } else {
+		    	    item.style.display = "none";
+		    	  }
+		    	});
 		  }
 
 		  selectCarTypeCheckboxes.forEach((checkbox) =>

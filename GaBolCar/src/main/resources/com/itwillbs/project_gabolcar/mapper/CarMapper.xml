@@ -163,6 +163,7 @@
 			option_idx = #{option_idx }
 	</delete>
 	
+	
 	<select id="selectCarInfoList" resultType="map">
 			select
 			*
