@@ -87,91 +87,32 @@
 		
 		<!-- 차량 소개에서 차량 목록을 사용자가 차종에 따라 필터링하는 기능 구현 -->
 		<script type="text/javascript">
-		$(document).ready(function() {
-			  const selectCarTypeCheckboxes = $("input[name='selectCarType']");
-			  let selectedCarTypes = [];
-
-			  const selectFuelCheckboxes = $("input[name='selectFuel']");
-			  let selectedFuelTypes = [];
-
-			  selectFuelCheckboxes.on("change", function() {
-			    if ($(this).is(":checked")) {
-			      selectedFuelTypes.push($(this).val());
-			    } else {
-			      selectedFuelTypes = selectedFuelTypes.filter(type => type !== $(this).val());
-			    }
-
-			    filterCarList();
-			  });
-
-			  selectCarTypeCheckboxes.on("change", function() {
-			    if ($(this).is(":checked")) {
-			      selectedCarTypes.push($(this).val());
-			    } else {
-			      selectedCarTypes = selectedCarTypes.filter(type => type !== $(this).val());
-			    }
-
-			    filterCarList();
-			  });
-
-			  function filterCarList() {
-			    const carItems = $(".car-item");
-
-			    carItems.each(function() {
-			      let shouldDisplayByCarType = false;
-			      let shouldDisplayByFuelType = false;
-
-			      if (selectedCarTypes.length === 0) {
-			        shouldDisplayByCarType = true;
-			      } else {
-			        selectedCarTypes.forEach((carType) => {
-			          if ($(this).hasClass(carType.toLowerCase().replace(' ', '_'))) {
-			            shouldDisplayByCarType = true;
-			          }
-			        });
-			      }
-
-			      if (selectedFuelTypes.length === 0) {
-			        shouldDisplayByFuelType = true;
-			      } else {
-			        selectedFuelTypes.forEach((fuelType) => {
-			          if ($(this).hasClass(fuelType)) {
-			            shouldDisplayByFuelType = true;
-			          }
-			        });
-			      }
-
-			      if (shouldDisplayByCarType && shouldDisplayByFuelType) {
-			        $(this).css("display", "block");
-			      } else {
-			        $(this).css("display", "none");
-			      }
-			    });
+		function filterCarList() {
+			const carItems = document.getElementsByClassName("")
+		}			  
+			  
+			// 체크박스 클릭시 버튼 활성화 처리
+			$(".left-div > label").on("click", function() {
+			  const checkbox = $(this).find("input:checkbox");
+			  if (checkbox.is(":checked")) {
+			    $(this).css({"background": "#fff", "color": "#000"});
+			    checkbox.prop("checked", false);
+			  } else {
+			    $(this).css({"background": "#ff6600", "color": "#fff"});
+			    checkbox.prop("checked", true);
 			  }
-
-			  $(".left-div > label").on("click", function() {
-			    const checkbox = $(this).find("input:checkbox");
-			    if (checkbox.is(":checked")) {
-			      $(this).css({"background": "#fff", "color": "#000"});
-			      checkbox.prop("checked", false);
-			    } else {
-			      $(this).css({"background": "#ff6600", "color": "#fff"});
-			      checkbox.prop("checked", true);
-			    }
-			  });
-
-			  $(".right-div > label").on("click", function() {
-			    const checkbox = $(this).find("input:checkbox");
-			    if (checkbox.is(":checked")) {
-			      $(this).css({"background": "#fff", "color": "#000"});
-			      checkbox.prop("checked", false);
-			    } else {
-			      $(this).css({"background": "#ff6600", "color": "#fff"});
-			      checkbox.prop("checked", true);
-			    }
-			  });
 			});
 
+			$(".right-div > label").on("click", function() {
+			  const checkbox = $(this).find("input:checkbox");
+			  if (checkbox.is(":checked")) {
+			    $(this).css({"background": "#fff", "color": "#000"});
+			    checkbox.prop("checked", false);
+			  } else {
+			    $(this).css({"background": "#ff6600", "color": "#fff"});
+			    checkbox.prop("checked", true);
+			  }
+			});
 			
 
 		</script>
