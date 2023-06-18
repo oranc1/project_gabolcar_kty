@@ -70,11 +70,11 @@ public class CarService {
 		return mapper.deletCarFile(car_idx);
 	}
 	
-	// 차량소개(car_info_list.jsp)
-	public List<Map<String, Object>> carInfoList() {
-		// TODO Auto-generated method stub
-		return mapper.selectCarInfoList();
-	}
+//	// 차량소개(car_info_list.jsp)
+//	public List<Map<String, Object>> carInfoList() {
+//		// TODO Auto-generated method stub
+//		return mapper.selectCarInfoList();
+//	}
 	
 //	public int carUpdate(Map<String, String> map) {
 //		return mapper.updateCar(map);

@@ -361,16 +361,11 @@ public class CarItemController {
 		return "html/car_item/res/car_res_info";
 	}
 	
-//	@Autowired
-//	private CarService car_service;
-	
 	//차량 소개
 	@GetMapping("carInfoList")
 	public ModelAndView carInfo() {
 	List<Map<String, Object>> carInfoList = carItemService.carInfoList();
 	return new ModelAndView("html/car_item/car_info_list","carInfoList",carInfoList);
-		
-		//		return "html/car_item/car_info_list";
 	}
 	
 	//============ 리뷰 =================
