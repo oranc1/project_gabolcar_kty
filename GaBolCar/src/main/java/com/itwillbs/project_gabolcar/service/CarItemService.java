@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.project_gabolcar.mapper.BrcMapper;
+import com.itwillbs.project_gabolcar.mapper.CarItemMapper;
 import com.itwillbs.project_gabolcar.mapper.CarMapper;
 import com.itwillbs.project_gabolcar.vo.CarVO;
 
@@ -20,6 +21,9 @@ public class CarItemService {
 	
 	@Autowired
 	CarMapper carMapper;
+	
+	@Autowired
+	CarItemMapper carItemMapper;
 	
 	public List<String> findBrcList(){
 		// 변수 초기화
@@ -157,6 +161,11 @@ public class CarItemService {
 		}// for문 끝
 		
 	}// 메서드 끝
+
+	// 차량 소개
+	public List<Map<String, Object>> carInfoList() {
+		return carItemMapper.selectCarInfoList();
+	}
 }
 
 

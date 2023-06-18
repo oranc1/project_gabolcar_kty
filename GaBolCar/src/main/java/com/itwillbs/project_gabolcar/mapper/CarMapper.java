@@ -47,6 +47,8 @@ public interface CarMapper {
 	int updateCar(CarVO car);
 
 	int deletCarFile(int car_idx);
-
-	List<Map<String, Object>> selectCarInfoList();
+	
+	
+//	// 차량 소개
+//	List<Map<String, Object>> selectCarInfoList();
 }
