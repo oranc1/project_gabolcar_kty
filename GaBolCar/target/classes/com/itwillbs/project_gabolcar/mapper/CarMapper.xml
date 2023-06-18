@@ -26,6 +26,7 @@
 			, now()
 		)
 	</insert>
+	
 	<insert id="insertCarOption" parameterType="com.itwillbs.project_gabolcar.vo.CarVO">
 		insert into
 			car_options
@@ -42,6 +43,7 @@
 		from
 			car_info
 	</select>
+	
 		<select id="selectCar" resultType="map" parameterType="com.itwillbs.project_gabolcar.vo.CarVO">
 		select
 			*
@@ -60,31 +62,53 @@
 		update
 			car_info
 		set
-			car_type = #{car_type},
-			car_number = #{car_number},
-			car_company = #{car_company},
-			car_model = #{car_model},
-			car_old = #{car_old},
-			car_shift_type = #{car_shift_type},
-			car_fuel_type = #{car_fuel_type},
-			car_riding = #{car_riding},
-			car_age = #{car_age},
-			car_career = #{car_career},
-			car_license = #{car_license},
-			car_weekdays = #{car_weekdays},
-			car_weekend = #{car_weekend},
-			brc_name = #{brc_name},
+	        car_type = #{car_type},
+	        car_number = #{car_number},
+	        car_company = #{car_company},
+	        car_model = #{car_model},
+	        car_old = #{car_old},
+	        car_shift_type = #{car_shift_type},
+	        car_fuel_type = #{car_fuel_type},
+	        car_riding = #{car_riding},
+	        car_age = #{car_age},
+	        car_career = #{car_career},
+	        car_license = #{car_license},
+	        car_weekdays = #{car_weekdays},
+	        car_weekend = #{car_weekend},
+	        brc_name = #{brc_name},
+	        car_file = #{car_file},
+	        car_file_path = #{car_file_path}
 <!-- 			car_image_url = #{car_image_url}, -->
 			car_status = #{car_status}
+				<if test="board_file != null and !board_file.equals('')">
+					, car_file = #{board_file}
+					, board_file_path = #{board_file_path}
+				</if>
 		where
 			car_idx=#{car_idx}
 	</update>
+	
 	<delete id="deleteCar" parameterType="int">
 		delete from
 			car_info
 		where
 			car_idx=#{car_idx}
 	</delete>
+	
+	<!-- 수정시 파일삭제 -->
+	<update id="deletCarFile">
+		UPDATE car_info
+			SET
+				car_file = ''
+				, car_file_path = ''
+			WHERE
+				car_idx = #{car_idx}
+	</update>
+	
+	
+	
+	
+	
     <insert id="registerOption" parameterType="String">
         insert into
             option_list
@@ -138,4 +162,12 @@
 		where
 			option_idx = #{option_idx }
 	</delete>
+	
+	<select id="selectCarInfoList" resultType="map">
+			select
+			*
+		from
+			car_info
+	</select>
+	
 </mapper>

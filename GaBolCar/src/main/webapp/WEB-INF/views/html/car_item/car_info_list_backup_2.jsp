@@ -86,49 +86,56 @@
 		
 		
 		<script type="text/javascript">
-		  const selectCarTypeCheckboxes = document.querySelectorAll("input[name='selectCarType']");
+		
+		function showCars(carTypes) {
+			  const cars = document.getElementsByClassName("car-item");
+			  for (let i = 0; i < cars.length; i++) {
+			    const car_type = cars[i].classList;
+			    let showThisCar = true;
+			    for (let j = 0; j < carTypes.length; j++) {
+			      if (!car_type.contains(carTypes[j])) {
+			        showThisCar = false;
+			        break;
+			      }
+			    }
+			    if (showThisCar) {
+			      cars[i].style.display = "";
+			    } else {
+			      cars[i].style.display = "none";
+			    }
+			  }
+			}
+			
+			// 선택된 버튼들을 저장할 배열을 초기화합니다.
+			let selectedCarTypes = [];
+			let selectedFuels = [];
+			
+			// 차종 선택 체크박스 클릭 이벤트 리스너를 추가합니다.
+			$("input[name='selectCarType']").on("click", function() {
+			  // 클릭된 체크박스의 value 값을 배열에 추가 or 제거합니다.
+			  const carType = $(this).val();
+			  if ($(this).is(":checked")) {
+			    selectedCarTypes.push(carType);
+			  } else {
+			    selectedCarTypes = selectedCarTypes.filter((val) => val !== carType);
+			  }
+			  // showCars 함수에 선택된 차종 배열을 전달해, 해당 차종만 출력됩니다.
+			  showCars(selectedCarTypes);
+			});
+			
+			// 연료 선택 체크박스 클릭 이벤트 리스너를 추가합니다.
+			$("input[name='selectFuel']").on("click", function() {
+			  // 클릭된 체크박스의 value 값을 배열에 추가 or 제거합니다.
+			  const fuel = $(this).val();
+			  if ($(this).is(":checked")) {
+			    selectedFuels.push(fuel);
+			  } else {
+			    selectedFuels = selectedFuels.filter((val) => val !== fuel);
+			  }
+			  // 연료는 선택 여부와 상관 없이 showCars 함수에 선택된 차종 배열도 함께 전달합니다.
+			  showCars(selectedCarTypes.concat(selectedFuels));
+			});
 
-		  let selectedCarTypes = [];
-
-		  function filterCarList() {
-		    const carItems = document.getElementsByClassName("car-item");
-
-		    [...carItems].forEach((item) => {
-		      let shouldDisplay = false;
-
-		      if (selectedCarTypes.length === 0) {
-		        shouldDisplay = true;
-		      } else {
-		        selectedCarTypes.forEach((carType) => {
-		        	 if (item.classList.contains(carType.toLowerCase().replace(' ', '_'))) {
-		            shouldDisplay = true;
-		          }
-		        });
-		      }
-
-		      if (shouldDisplay) {
-		        item.style.display = "block";
-		      } else {
-		        item.style.display = "none";
-		      }
-		    });
-		  }
-
-		  selectCarTypeCheckboxes.forEach((checkbox) =>
-		    checkbox.addEventListener("change", (e) => {
-		      if (e.target.checked) {
-		        selectedCarTypes.push(e.target.value);
-		      } else {
-		        selectedCarTypes = selectedCarTypes.filter((type) => type !== e.target.value);
-		      }
-
-		      filterCarList();
-		    })
-		  );
-
-		  filterCarList();
-			  
-			  
 			// 체크박스 클릭시 버튼 활성화 처리
 			$(".left-div > label").on("click", function() {
 			  const checkbox = $(this).find("input:checkbox");

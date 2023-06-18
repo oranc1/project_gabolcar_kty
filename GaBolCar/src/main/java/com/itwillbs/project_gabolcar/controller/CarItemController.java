@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.project_gabolcar.service.CarItemService;
+import com.itwillbs.project_gabolcar.service.CarService;
 
 @Controller
 public class CarItemController {
@@ -359,11 +360,17 @@ public class CarItemController {
 	public String carIntroduce() {
 		return "html/car_item/res/car_res_info";
 	}
-
+	
+	@Autowired
+	private CarService car_service;
+	
 	//차량 소개
 	@GetMapping("carInfoList")
-	public String carInfo() {
-		return "html/car_item/car_info_list";
+	public ModelAndView carInfo() {
+	List<Map<String, Object>> carInfoList = car_service.carInfoList();
+	return new ModelAndView("html/car_item/car_info_list","carInfoList",carInfoList);
+		
+		//		return "html/car_item/car_info_list";
 	}
 	
 	//============ 리뷰 =================

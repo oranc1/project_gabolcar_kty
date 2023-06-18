@@ -26,9 +26,6 @@ public class CarService {
 		return mapper.selectCar(car);
 	}
 
-	public int carUpdate(Map<String, String> map) {
-		return mapper.updateCar(map);
-	}
 
 	public int carDelete(int car_idx) {
 		return mapper.deleteCar(car_idx);
@@ -61,4 +58,26 @@ public class CarService {
 	public int carOptionRegister(CarVO car) {
 		return mapper.insertCarOption(car);
 	}
+
+	// 차량업데이트(수정) 작업 중
+	public int carUpdate(CarVO car) {
+		// TODO Auto-generated method stub
+		return mapper.updateCar(car);
+	}
+
+	public int removeCarFile(int car_idx) {
+		// TODO Auto-generated method stub
+		return mapper.deletCarFile(car_idx);
+	}
+	
+	// 차량소개(car_info_list.jsp)
+	public List<Map<String, Object>> carInfoList() {
+		// TODO Auto-generated method stub
+		return mapper.selectCarInfoList();
+	}
+	
+//	public int carUpdate(Map<String, String> map) {
+//		return mapper.updateCar(map);
+//	}
+	
 }

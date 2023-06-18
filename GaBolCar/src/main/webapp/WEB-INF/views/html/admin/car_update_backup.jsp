@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Car_Leg</title>
+  <title>carModify</title>
  
 <link href="${pageContext.request.contextPath }/resources/css/inc/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath }/resources/css/admin/car_register.css" rel="stylesheet">
@@ -16,9 +16,10 @@
 <body>
 	<section id="reg_section">
     	<div id="title_container">
-      		<h1>차량 등록</h1>
+      		<h1>차량 수정</h1>
     	</div>
-		<form action="CarRegisterPro" name="writeForm" method="post" enctype="multipart/form-data">
+		<form action="carUpdatePro2" name="writeForm" method="post">
+			<input type="hidden" name="car_idx" value="${car.car_idx }">
 	  		<div id="modifyForm">
 	    		<table>
 	      			<tr>
@@ -26,11 +27,11 @@
 	        			<td class="td_right">
 	          				<select name="car_type" required="required" class="form-select">
 	            				<option value="">선택하세요</option>
-	            				<option value="경형/소형">경형/소형</option>
+	            				<option value="경형">경형</option>
 	            				<option value="준중형">준중형</option>
-	            				<option value="중형">중형</option>
 	            				<option value="대형">대형</option>
 	            				<option value="SUV">SUV</option>
+					            <option value="전기">전기</option>
 					            <option value="승합">승합</option>
 					            <option value="수입">수입</option>
 							</select>
@@ -106,7 +107,7 @@
 			            <td class="td_left"><label for="car_weekend">주말 대여료</label></td>
 			            <td class="td_right"><input type="text" name="car_weekend" required="required" class="form-control" /></td>
 	         		 </tr>
-	        		  <tr>
+	        		 <tr>
 						<td class="td_left"><label for="brc_name">지점명</label></td>
 						<td class="td_right">
 	              			<select name="brc_name" required="required" class="form-select">
@@ -117,20 +118,32 @@
 	              			</select>
 						</td>
 	          		</tr>
-	          		<tr>
-						<td class="td_left">
-							<label for="option_name">옵션</label>
+	      			<tr>
+	        			<td class="td_left"><label for="car_status">차량상태</label></td>
+	        			<td class="td_right">
+	          				<select name="car_status" required="required" class="form-select">
+	            				<option value="">선택하세요</option>
+	            				<option value="신규">신규</option>
+	            				<option value="점검">점검</option>
+	            				<option value="대여">대여</option>
+	            				<option value="가능">대기</option> 
+							</select>
+	        			</td>
+	      			</tr>
+		     		<tr>
+				        <td class="td_left">
+				        	<label for="options">옵션</label>
 				        </td>
-						<td class="td_right">
+				        <td class="td_right">
 			          		<div class="row">
-			            		<div class="col-md-12">
+			            		<div class="col-md-6">
 									<label class="checkbox-label">
 			                			<input type="checkbox" id="selectAllCheckbox">
 			                			전체 선택
 			              			</label>
 			              			<c:forEach var="option" items="${optionList }">
 										<label class="checkbox-label">
-											<input type="checkbox" name="option_idx" value="${option.option_idx }">
+											<input type="checkbox" name="options" value="${option.option_idx }">
 			  								${option.option_name }
 										</label>
 									</c:forEach>
@@ -139,7 +152,7 @@
 		        		</td>
 					</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file1">차량 이미지 첨부1(메인,차량소개)</label></td>
+				        <td class="td_left"><label for="file1">차량 이미지 첨부1(메인,차량소개)</label></td> <!-- 메인,차량소개 1장 -->
 				        <td class="td_right"><input type="file" name="files" id="file1" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
@@ -162,31 +175,19 @@
 				        <td class="td_left"><label for="file6">차량 이미지 첨부6</label></td>
 				        <td class="td_right"><input type="file" name="files" id="file6" required="required" class="form-control" /></td>
 			      	</tr>
-	      			<tr>
-	        			<td class="td_left"><label for="car_status">차량상태</label></td>
-	        			<td class="td_right">
-	          				<select name="car_status" required="required" class="form-select">
-	            				<option value="">선택하세요</option>
-	            				<option value="신규">신규</option>
-	            				<option value="점검">점검</option>
-	            				<option value="대여">대여</option>
-	            				<option value="가능">대기</option> 
-							</select>
-	        			</td>
-	      			</tr>
-				</table>
+	    		</table>
 		    <div id="commandCell">
-		      	<input type="submit" value="등록" class="btn btn-warning">&nbsp;&nbsp;
-		      	<input type="reset" value="다시쓰기" class="btn btn-secondary">&nbsp;&nbsp;
-		      	<input type="button" value="취소" onclick="history.back()" class="btn btn-secondary">
+				<button id="submitBtn" class="btn btn-warnig">등록</button>
+				<button id="resetBtn" class="btn btn-secondary">초기화</button>
+				<button id="backBtn" class="btn btn-secondary">취소</button>
 		    </div>
 		</div>
-		</form>
+	</form>
 	</section>
 	<script>
 	  document.addEventListener('DOMContentLoaded', function() {
 	    var selectAllCheckbox = document.getElementById('selectAllCheckbox');
-	    var checkboxes = document.querySelectorAll('input[name="option_idx"]');
+	    var checkboxes = document.querySelectorAll('input[name="options"]');
 	  
 	    selectAllCheckbox.addEventListener('change', function() {
 	      checkboxes.forEach(function(checkbox) {
@@ -194,6 +195,55 @@
 	      });
 	    });
 	  });
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$("select[name=car_type]").val("${car.car_type}");
+			$("input[name=car_number]").val("${car.car_number}");
+			$("input[name=car_company]").val("${car.car_company}");
+			$("input[name=car_model]").val("${car.car_model}");
+			$("input[name=car_old]").val("${car.car_old}");
+			$("select[name=car_shift_type]").val("${car.car_shift_type}");
+			$("select[name=car_fuel_type]").val("${car.car_fuel_type}");
+			$("input[name=car_riding]").val("${car.car_riding}");
+			$("input[name=car_age]").val("${car.car_age}");
+			$("input[name=car_career]").val("${car.car_career}");
+			$("select[name=car_license]").val("${car.car_license}");
+			$("input[name=car_weekdays]").val("${car.car_weekdays}");
+			$("input[name=car_weekend]").val("${car.car_weekend}");
+			$("select[name=brc_name]").val("${car.brc_name}");
+			// 옵션 값 가져와서 체크활성화
+			// 차량이미지 관련 확인필요
+// 			$("select[name=car_file"]").val("${car.car_file}");
+// 			$("select[name=car_file"]").val("${car.car_file}");
+// 			$("select[name=car_file"]").val("${car.car_file}");
+// 			$("select[name=car_file"]").val("${car.car_file}");
+// 			$("select[name=car_file"]").val("${car.car_file}");
+// 			$("select[name=car_file"]").val("${car.car_file}");
+			
+			$(function(){
+				// submit 창이동 및 지연
+				$("#submitBtn").on("click",function() {
+					$("form").submit
+			        setTimeout(() => window.open("about:blank","_self"), 100);
+				});
+				
+				// submit 버튼 색상
+				$("#submitBtn").css({
+					"background" : "rgb(255, 94, 0)",
+					"color" : "#FFFFFF"
+				})
+			    
+			    $("#resetBtn").on("click", function() {
+					location.reload();
+				});
+				
+				$("#backBtn").on("click", function() {
+					history.back();
+				})
+				
+			});
+		});
 	</script>
 </body>
 </html>

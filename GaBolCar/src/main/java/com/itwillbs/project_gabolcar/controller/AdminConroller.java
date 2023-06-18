@@ -2,6 +2,7 @@ package com.itwillbs.project_gabolcar.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -88,7 +92,7 @@ public class AdminConroller {
 		}
 		
 	    MultipartFile[] mFiles = car.getFiles();
-
+	    
 	    if (mFiles != null && mFiles.length > 0) {
 	        int fileCount = Math.min(mFiles.length, 6); // 파일 수를 6개로 제한
 
@@ -202,18 +206,116 @@ public class AdminConroller {
 		return "html/admin/car_update";
 	}
 	
-	// 차량수정
+	
+//	// 차량 수정 과정에서 파일 삭제 처리를 별도로 수행하는 deleteFile() 메서드(AJAX 요청 처리)
+//	@ResponseBody
+//	@PostMapping("CarDeleteFile")
+//	public void deleteFile(
+//	        @RequestParam int car_idx,
+//	        @RequestParam String car_file,
+//	        @RequestParam String car_file_path,
+//	        HttpServletResponse response,
+//	        HttpSession session) {
+//
+//	    try {
+//	        response.setCharacterEncoding("UTF-8");
+//	        int deleteCount = car_service.removeCarFile(car_idx);
+//
+//	        if (deleteCount > 0) {
+//	            String uploadDir = "/resources/upload"; // 프로젝트 상의 업로드 경로
+//	            String saveDir = session.getServletContext().getRealPath(uploadDir); // 실제 업로드 경로
+//	            saveDir += car_file_path;
+//
+//	            Path path = Paths.get(saveDir + "/" + car_file);
+//	            Files.deleteIfExists(path);
+//
+//	            response.getWriter().print("true");
+//	        } else {
+//	            response.getWriter().print("false");
+//	        }
+//
+//	    } catch (IOException e) {
+//	        e.printStackTrace();
+//	    }
+//	}
+	
+	
+	// 차량 수정
 	@PostMapping("carUpdatePro")
-	public String carUpdatePro(@RequestParam Map<String, String> map, Model model) {
-		int updateCount = car_service.carUpdate(map);
-		if (updateCount > 0) {
-			model.addAttribute("msg","수정 완료");
-			return "redirect:/admCarList";
-		} else {
-			model.addAttribute("msg","수정 실패");
-			return "inc/fail_back";
-		}
+	public String carUpdatePro(CarVO car, HttpSession session, Model model) {
+
+	    String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
+	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+	    
+	    try {
+	        Date date = new Date(); 
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+	        car.setCar_file_path("/" + sdf.format(date));
+	        saveDir = saveDir + car.getCar_file_path();
+	        
+	        Path path = Paths.get(saveDir);
+	        
+	        Files.createDirectories(path);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    MultipartFile[] mFiles = car.getFiles();
+
+	    if (mFiles != null && mFiles.length > 0) {
+	        int fileCount = Math.min(mFiles.length, 6); // 파일 수를 6개로 제한
+
+	        List<String> fileNames = new ArrayList<>(); // DB에 저장할 파일명 리스트
+
+	        for (int i = 0; i < fileCount; i++) {
+	            MultipartFile mFile = mFiles[i];
+	            String originalFileName = mFile.getOriginalFilename();
+
+	            if (originalFileName != null && !originalFileName.isEmpty()) {
+	                String uuid = UUID.randomUUID().toString();
+	                String carFile = uuid.substring(0, 8) + "_" + originalFileName;
+
+	                fileNames.add(carFile); // 파일명을 리스트에 추가
+
+	                System.out.println("실제 업로드 될 파일명: " + carFile);
+
+	                try {
+	                    mFile.transferTo(new File(saveDir, carFile));
+	                } catch (IllegalStateException e) {
+	                    e.printStackTrace();
+	                    model.addAttribute("msg", "파일 업로드 실패!");
+	                    return "inc/fail_back";
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                    model.addAttribute("msg", "파일 업로드 실패!");
+	                    return "inc/fail_back";
+	                }
+	            }
+	        }
+
+	        car.setCarFiles(fileNames); // 차량 객체에 파일명 리스트를 설정
+
+	        int updateCount = car_service.carUpdate(car);
+
+	        if (updateCount > 0) {
+	            System.out.println("차량 수정 성공");
+	            car.setCar_idx((int) car_service.carSelect(car).get("car_idx"));
+	            car_service.deleteOptionFile(car.getCar_idx()); // 바꿔야할거 같다 ..
+	            updateCount = car_service.carOptionRegister(car);
+	            if (updateCount > 0 ) {
+	                System.out.println("차량 옵션 수정 성공");
+	            } else {
+	                System.out.println("차량 옵션 수정 실패");
+	            }
+	        } else {
+	            model.addAttribute("msg", "차량 수정 실패!");
+	            return "inc/fail_back";
+	        }
+	        
+	    }
+	    return "redirect:/admCarList";
 	}
+
 	
 	// 차량삭제
 	@GetMapping("carDeletePro")
@@ -356,5 +458,40 @@ public class AdminConroller {
     	}
     	return "redirect:/optionList";
     }
+
+	// 차량 수정 과정에서 파일 삭제 처리를 별도로 수행하는 deleteFile() 메서드(AJAX 요청 처리)
+	@ResponseBody
+	@PostMapping("CarDeleteFile")
+	public void deleteFile(
+	        @RequestParam int car_idx,
+	        @RequestParam String car_file,
+	        @RequestParam String car_file_path,
+	        HttpServletResponse response,
+	        HttpSession session) {
+
+	    try {
+	        response.setCharacterEncoding("UTF-8");
+	        int deleteCount = car_service.removeCarFile(car_idx);
+
+	        if (deleteCount > 0) {
+	            String uploadDir = "/resources/upload"; // 프로젝트 상의 업로드 경로
+	            String saveDir = session.getServletContext().getRealPath(uploadDir); // 실제 업로드 경로
+	            saveDir += car_file_path;
+
+	            Path path = Paths.get(saveDir + "/" + car_file);
+	            Files.deleteIfExists(path);
+
+	            response.getWriter().print("true");
+	        } else {
+	            response.getWriter().print("false");
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+    
     
 }
+
+

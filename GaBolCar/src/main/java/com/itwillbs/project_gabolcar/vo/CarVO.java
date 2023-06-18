@@ -33,5 +33,9 @@ public class CarVO {
 	private Timestamp car_date;
 //	private MultipartFile file; // 단일 파일
 	private MultipartFile[] files; // 복수개 파일 
+	private String oldFilename;
 	private List<String> carFiles;
+	private List<String> carFile; // 여기에 파일이 저장된거 같은데 ....
+
+	
 }
