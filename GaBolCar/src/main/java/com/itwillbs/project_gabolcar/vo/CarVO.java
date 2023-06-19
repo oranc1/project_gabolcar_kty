@@ -36,6 +36,37 @@ public class CarVO {
 	private String oldFilename;
 	private List<String> carFiles;
 	private List<String> carFile; // 여기에 파일이 저장된거 같은데 ....
-
 	
+	private String car_file1;
+	private String car_file2;
+	private String car_file3;
+	private String car_file4;
+	private String car_file5;
+	private String car_file6;
+	
+    public void setCarFileAt(int index, String carFile){
+        switch (index) {
+            case 1:
+                this.car_file1 = carFile;
+                break;
+            case 2:
+                this.car_file2 = carFile;
+                break;
+            case 3:
+                this.car_file3 = carFile;
+                break;
+            case 4:
+                this.car_file4 = carFile;
+                break;
+            case 5:
+                this.car_file5 = carFile;
+                break;
+            case 6:
+                this.car_file6 = carFile;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid index: " + index);
+        }
+    }
+
 }
