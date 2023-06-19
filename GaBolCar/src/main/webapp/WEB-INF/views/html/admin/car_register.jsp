@@ -139,27 +139,27 @@
 		        		</td>
 					</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file1">차량 이미지 첨부1</label></td>
+				        <td class="td_left"><label for="file1"> 차량예약, 차량소개 이미지</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file1" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file2">차량 이미지 첨부2</label></td>
+				        <td class="td_left"><label for="file2">차량상세예약 1(정면)</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file2" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file3">차량 이미지 첨부3</label></td>
+				        <td class="td_left"><label for="file3">차량상세예약 2(후면)</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file3" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file4">차량 이미지 첨부4</label></td>
+				        <td class="td_left"><label for="file4">차량상세예약 3(측면)</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file4" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file5">차량 이미지 첨부5</label></td>
+				        <td class="td_left"><label for="file5">차량상세예약 4(내부1)</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file5" required="required" class="form-control" /></td>
 			      	</tr>
 			      	<tr> 
-				        <td class="td_left"><label for="file6">차량 이미지 첨부6</label></td>
+				        <td class="td_left"><label for="file6">차량상세예약 5(내부2)</label></td>
 				        <td class="td_right"><input type="file" name="files" id="car_file6" required="required" class="form-control" /></td>
 			      	</tr>
 	      			<tr>
