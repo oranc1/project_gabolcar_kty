@@ -63,6 +63,7 @@
 				</otherwise>
 			</choose>
 	</select>
+	
 	<update id="updateCar" parameterType="map">
 		update
 			car_info
@@ -81,14 +82,15 @@
 	        car_weekdays = #{car_weekdays},
 	        car_weekend = #{car_weekend},
 	        brc_name = #{brc_name},
-	        car_file = #{car_file},
-	        car_file_path = #{car_file_path}
+     		car_file1 = #{car_file1},
+			car_file2 = #{car_file2},
+			car_file3 = #{car_file3},
+			car_file4 = #{car_file4},
+			car_file5 = #{car_file5},
+			car_file6 = #{car_file6},
+	        car_file_path = #{car_file_path},
 <!-- 			car_image_url = #{car_image_url}, -->
 			car_status = #{car_status}
-				<if test="board_file != null and !board_file.equals('')">
-					, car_file = #{board_file}
-					, board_file_path = #{board_file_path}
-				</if>
 		where
 			car_idx=#{car_idx}
 	</update>
