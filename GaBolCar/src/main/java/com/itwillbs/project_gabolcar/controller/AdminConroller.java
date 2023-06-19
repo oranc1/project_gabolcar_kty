@@ -71,6 +71,7 @@ public class AdminConroller {
 		return "html/admin/car_register";
 	}
 	
+	// 차량등록
 	@PostMapping("CarRegisterPro")
 	public String carRegisterPro(CarVO car, HttpSession session, Model model) {
 	    String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
