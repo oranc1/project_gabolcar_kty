@@ -34,8 +34,8 @@ public class CarVO {
 //	private MultipartFile file; // 단일 파일
 	private MultipartFile[] files; // 복수개 파일 
 	private String oldFilename;
-	private List<String> carFiles;
-	private List<String> carFile; // 여기에 파일이 저장된거 같은데 ....
+//	private List<String> carFiles;
+//	private List<String> carFile; //
 	
 	private String car_file1;
 	private String car_file2;
@@ -44,6 +44,7 @@ public class CarVO {
 	private String car_file5;
 	private String car_file6;
 	
+	// 파일명을 carFile1 ~ carFile6 변수에 셋팅
     public void setCarFileAt(int index, String carFile){
         switch (index) {
             case 1:
