@@ -1,11 +1,20 @@
 package com.itwillbs.project_gabolcar.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.itwillbs.project_gabolcar.service.MemberService;
+import com.itwillbs.project_gabolcar.vo.QuestionVO;
 
 @Controller
 public class MemberController {
-
+	
+	@Autowired
+	private MemberService qst_service;
+	
 	// =============== 멤버 페이지, 멤버 정보 관련 ================
 	//회원 정보 수정
 	@GetMapping("member/infoUpdate")
@@ -78,7 +87,28 @@ public class MemberController {
 	public String questionBoard() {
 		return "html/member/question/question_board";
 	}
-
+	
+	@GetMapping("QuestionWrietForm")
+	public String quetionWriteForm() {
+	
+		return "html/member/question/question_write_form";
+	}
+	
+	
+	@PostMapping("QuestionWritePro")
+	public String quetionWritePro(QuestionVO question, Model model) {
+		int insertCount = qst_service.questionBoard(question);
+		if(insertCount > 0) {
+			System.out.println("QuestionWrite 성공");
+			return "html/member/question/question_board";
+		} else {
+			model.addAttribute("msg", "1:1 문의 쓰기 실패!");
+			return "fail_back";
+		}
+	}
+	
+	
+	
 	@GetMapping("question/detail")
 	public String questionDetail() {
 		return "html/member/question/question_detail";

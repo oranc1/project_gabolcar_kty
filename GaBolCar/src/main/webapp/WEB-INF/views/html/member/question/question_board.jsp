@@ -71,7 +71,8 @@
 								
 								<!-- 예약 내역(반납 시간 후)이 있는 사람만 출력 -->
 								<div class="write_btn">
-									<a href="#">글쓰기</a>
+									<a href = "QuestionWrietForm" >글쓰기</a>
+<!-- 										<input type="button" value="글쓰기" onclick="location.href='BoardWriteForm.bo'" />	 -->
 								</div>
 
 								<div class="list_pager_wrap">

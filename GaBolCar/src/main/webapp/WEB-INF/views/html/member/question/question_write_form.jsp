@@ -19,7 +19,7 @@
     <div id="notice_cont">
         <section id="sec_con" class="inr">
             <h1 class="con_title">1:1 문의 게시판</h1>
-            <form action="CarRegisterPro" name="CarRegisterPro" method="post" >
+            <form action="QuestionWritePro" name="QuestionWritePro" method="post" >
                 <section id="board_wrap">
                     <section id="board_list" class="notice">
                         <div class="wrapper">
