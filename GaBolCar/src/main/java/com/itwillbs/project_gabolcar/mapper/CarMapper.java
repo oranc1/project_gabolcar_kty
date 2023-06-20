@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.project_gabolcar.vo.CarOptionVO;
 import com.itwillbs.project_gabolcar.vo.CarVO;
 
 public interface CarMapper {
@@ -47,6 +48,9 @@ public interface CarMapper {
 	int updateCar(CarVO car);
 
 	int deletCarFile(int car_idx);
+	
+	// 차량 수정에 가져갈 차량에 들어간 옵션 
+	List<Map<String, Object>> selectOptionCar(CarVO car);
 	
 	
 //	// 차량 소개

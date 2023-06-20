@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.project_gabolcar.mapper.CarMapper;
+import com.itwillbs.project_gabolcar.vo.CarOptionVO;
 import com.itwillbs.project_gabolcar.vo.CarVO;
 
 @Service
@@ -69,6 +70,14 @@ public class CarService {
 		// TODO Auto-generated method stub
 		return mapper.deletCarFile(car_idx);
 	}
+
+	public List<Map<String, Object>> carOptionList(CarVO car) {
+		
+		return mapper.selectOptionCar(car);
+	}
+	
+	
+
 	
 //	// 차량소개(car_info_list.jsp)
 //	public List<Map<String, Object>> carInfoList() {

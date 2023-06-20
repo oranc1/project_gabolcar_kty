@@ -41,6 +41,17 @@
 		</foreach>
 	</insert>
 	
+<!-- 	06/20 차량에등록된 옵션 셀렉트 -->
+	<select id="selectOptionCar" resultType="map">
+	    SELECT 
+	        ci.car_idx, 
+	        co.option_idx
+	    FROM
+	        car_options co
+	    JOIN
+	        car_info ci ON ci.car_idx = co.car_idx
+	</select>
+	
 	
 	<select id="selectCarList" resultType="map">
 		select

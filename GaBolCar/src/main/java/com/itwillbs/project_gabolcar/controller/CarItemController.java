@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.project_gabolcar.service.CarItemService;
 import com.itwillbs.project_gabolcar.service.CarService;
+import com.itwillbs.project_gabolcar.vo.CarVO;
 
 @Controller
 public class CarItemController {
@@ -365,10 +366,13 @@ public class CarItemController {
 	
 	//차량 소개
 	@GetMapping("carInfoList")
-	public ModelAndView carInfo(Model model) {
+	public ModelAndView carInfo(CarVO car, Model model) {
 	List<Map<String, Object>> carInfoList = carItemService.carInfoList();
 	List<Map<String, Object>> optionList = car_service.optionList();
 	model.addAttribute("optionList",optionList);
+	// 일단 넣어봄 0620 2:26
+	List<Map<String, Object>> carOptionList = car_service.carOptionList(car);
+	model.addAttribute("carOptionList", carOptionList);
 	return new ModelAndView("html/car_item/car_info_list","carInfoList",carInfoList);
 	}
 	

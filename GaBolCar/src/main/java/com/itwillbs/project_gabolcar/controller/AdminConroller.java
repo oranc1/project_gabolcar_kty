@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.itwillbs.project_gabolcar.service.BrcService;
 import com.itwillbs.project_gabolcar.service.CarService;
+import com.itwillbs.project_gabolcar.vo.CarOptionVO;
 import com.itwillbs.project_gabolcar.vo.CarVO;
 
 @Controller
@@ -73,7 +74,7 @@ public class AdminConroller {
 	
 	// 차량등록
 	@PostMapping("CarRegisterPro")
-	public String carRegisterPro(CarVO car, HttpSession session, Model model) {
+	public String carRegisterPro(CarOptionVO caroption ,CarVO car, HttpSession session, Model model) {
 	    String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
 	    String saveDir = session.getServletContext().getRealPath(uploadDir);
 
@@ -221,9 +222,13 @@ public class AdminConroller {
 		// 0620 차량수정으로 가져갈 optionList
 		List<Map<String, Object>> optionList = car_service.optionList();
 		model.addAttribute("optionList",optionList);
+		// 0620 차량수정폼에 가져갈 car_options 
+		List<Map<String, Object>> carOptionList = car_service.carOptionList(car);
+		model.addAttribute("carOptionList", carOptionList);
 		return "html/admin/car_update";
 	}
 	
+	// 차량수정폼에 가져갈 
 	
 //	// 차량 수정 과정에서 파일 삭제 처리를 별도로 수행하는 deleteFile() 메서드(AJAX 요청 처리)
 //	@ResponseBody
@@ -259,76 +264,159 @@ public class AdminConroller {
 	
 	
 	// 차량 수정
+//	@PostMapping("carUpdatePro")
+//	public String carUpdatePro(CarVO car, HttpSession session, Model model) {
+//
+//	    String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
+//	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+//
+//	    try {
+//	        Date date = new Date();
+//	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//	        car.setCar_file_path("/" + sdf.format(date));
+//	        saveDir = saveDir + car.getCar_file_path();
+//
+//	        Path path = Paths.get(saveDir);
+//
+//	        Files.createDirectories(path);
+//	    } catch (IOException e) {
+//	        e.printStackTrace();
+//	    }
+//
+//	    MultipartFile[] mFiles = car.getFiles();
+//
+//	    if (mFiles != null && mFiles.length > 0) {
+//	        int fileCount = Math.min(mFiles.length, 6); // 파일 수를 6개로 제한
+//
+//	        for (int i = 0; i < fileCount; i++) {
+//	            MultipartFile mFile = mFiles[i];
+//	            String originalFileName = mFile.getOriginalFilename();
+//
+//	            if (originalFileName != null && !originalFileName.isEmpty()) {
+//	                String uuid = UUID.randomUUID().toString();
+//	                String carFileName = uuid.substring(0, 8) + "_" + originalFileName;
+//
+//	                car.setCarFileAt(i+1, carFileName); // 파일명을 해당 car_file에 저장
+//
+//	                System.out.println("실제 업로드 될 파일명: " + carFileName);
+//
+//	                try {
+//	                    mFile.transferTo(new File(saveDir, carFileName));
+//	                } catch (IllegalStateException e) {
+//	                    e.printStackTrace();
+//	                    model.addAttribute("msg", "파일 업로드 실패!");
+//	                    return "inc/fail_back";
+//	                } catch (IOException e) {
+//	                    e.printStackTrace();
+//	                    model.addAttribute("msg", "파일 업로드 실패!");
+//	                    return "inc/fail_back";
+//	                }
+//	            }
+//	        }
+//	    }
+//
+//	    int updateCount = car_service.carUpdate(car);
+//
+//	    if (updateCount > 0) {
+//	        System.out.println("차량 수정 성공");
+//	        car.setCar_idx((int) car_service.carSelect(car).get("car_idx"));
+//	        car_service.deleteOptionFile(car.getCar_idx());
+//	        updateCount = car_service.carOptionRegister(car);
+//	        if (updateCount > 0) {
+//	            System.out.println("차량 옵션 수정 성공");
+//	        } else {
+//	            System.out.println("차량 옵션 수정 실패");
+//	        }
+//	    } else {
+//	        model.addAttribute("msg", "차량 수정 실패!");
+//	        return "inc/fail_back";
+//	    }
+//
+//	    return "redirect:/admCarList";
+//	}
+	
+	// 차량수정 중
 	@PostMapping("carUpdatePro")
-	public String carUpdatePro(CarVO car, HttpSession session, Model model) {
+    public String carUpdatePro(@RequestParam(value = "option_idx", required = false) List<Integer> optionIdxList, CarVO car, HttpSession session, Model model) {
 
-	    String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
-	    String saveDir = session.getServletContext().getRealPath(uploadDir);
+        String uploadDir = "/resources/upload/car"; // 서버 이미지 저장 경로
+        String saveDir = session.getServletContext().getRealPath(uploadDir);
 
-	    try {
-	        Date date = new Date();
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-	        car.setCar_file_path("/" + sdf.format(date));
-	        saveDir = saveDir + car.getCar_file_path();
+        try {
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            car.setCar_file_path("/" + sdf.format(date));
+            saveDir = saveDir + car.getCar_file_path();
 
-	        Path path = Paths.get(saveDir);
+            Path path = Paths.get(saveDir);
 
-	        Files.createDirectories(path);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	    MultipartFile[] mFiles = car.getFiles();
+        MultipartFile[] mFiles = car.getFiles();
 
-	    if (mFiles != null && mFiles.length > 0) {
-	        int fileCount = Math.min(mFiles.length, 6); // 파일 수를 6개로 제한
+        if (mFiles != null && mFiles.length > 0) {
+            int fileCount = Math.min(mFiles.length, 6); // 파일 수를 6개로 제한
 
-	        for (int i = 0; i < fileCount; i++) {
-	            MultipartFile mFile = mFiles[i];
-	            String originalFileName = mFile.getOriginalFilename();
+            for (int i = 0; i < fileCount; i++) {
+                MultipartFile mFile = mFiles[i];
+                String originalFileName = mFile.getOriginalFilename();
 
-	            if (originalFileName != null && !originalFileName.isEmpty()) {
-	                String uuid = UUID.randomUUID().toString();
-	                String carFileName = uuid.substring(0, 8) + "_" + originalFileName;
+                if (originalFileName != null && !originalFileName.isEmpty()) {
+                    String uuid = UUID.randomUUID().toString();
+                    String carFileName = uuid.substring(0, 8) + "_" + originalFileName;
 
-	                car.setCarFileAt(i+1, carFileName); // 파일명을 해당 car_file에 저장
+                    car.setCarFileAt(i+1, carFileName); // 파일명을 해당 car_file에 저장
 
-	                System.out.println("실제 업로드 될 파일명: " + carFileName);
+                    System.out.println("실제 업로드 될 파일명: " + carFileName);
 
-	                try {
-	                    mFile.transferTo(new File(saveDir, carFileName));
-	                } catch (IllegalStateException e) {
-	                    e.printStackTrace();
-	                    model.addAttribute("msg", "파일 업로드 실패!");
-	                    return "inc/fail_back";
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                    model.addAttribute("msg", "파일 업로드 실패!");
-	                    return "inc/fail_back";
-	                }
-	            }
-	        }
-	    }
+                    try {
+                        mFile.transferTo(new File(saveDir, carFileName));
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                        model.addAttribute("msg", "파일 업로드 실패!");
+                        return "inc/fail_back";
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        model.addAttribute("msg", "파일 업로드 실패!");
+                        return "inc/fail_back";
+                    }
+                }
+            }
+        }
 
-	    int updateCount = car_service.carUpdate(car);
+        int updateCount = car_service.carUpdate(car);
 
-	    if (updateCount > 0) {
-	        System.out.println("차량 수정 성공");
-	        car.setCar_idx((int) car_service.carSelect(car).get("car_idx"));
-	        car_service.deleteOptionFile(car.getCar_idx());
-	        updateCount = car_service.carOptionRegister(car);
-	        if (updateCount > 0) {
-	            System.out.println("차량 옵션 수정 성공");
-	        } else {
-	            System.out.println("차량 옵션 수정 실패");
-	        }
-	    } else {
-	        model.addAttribute("msg", "차량 수정 실패!");
-	        return "inc/fail_back";
-	    }
+        if (updateCount > 0) {
+            System.out.println("차량 수정 성공");
+            car.setCar_idx((int) car_service.carSelect(car).get("car_idx"));
+            car_service.deleteOptionFile(car.getCar_idx());
+            
+            // 옵션 수정 부분
+            if (optionIdxList != null && !optionIdxList.isEmpty()) {
+                for (Integer optionIdx : optionIdxList) {
+                    CarOptionVO carOption = new CarOptionVO();
+                    carOption.setCar_idx(car.getCar_idx());
+                    carOption.setOption_idx(optionIdx);
+                    int optionUpdateResult = car_service.carOptionRegister(car);
+                    
+                    if (optionUpdateResult > 0) {
+                        System.out.println("옵션 수정 성공: " + optionIdx);
+                    } else {
+                        System.out.println("옵션 수정 실패: " + optionIdx);
+                    }
+                }
+            }
+        } else {
+            model.addAttribute("msg", "차량 수정 실패!");
+            return "inc/fail_back";
+        }
 
-	    return "redirect:/admCarList";
-	}
+        return "redirect:/admCarList";
+    }
+	
 	
 	// 차량삭제
 	@GetMapping("carDeletePro")
@@ -362,20 +450,24 @@ public class AdminConroller {
             @RequestParam String option_name, 
             @RequestParam MultipartFile option_image, 
             HttpSession session, Model model) {
+
         String uploadDir = "/resources/upload/car_options";
         String saveDir = session.getServletContext().getRealPath(uploadDir);
+
         try {
             Path path = Paths.get(saveDir);
             Files.createDirectories(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         MultipartFile mFile = option_image;
         String originalFileName = mFile.getOriginalFilename();
         String uuid = UUID.randomUUID().toString();
         String option_image_url = uuid.substring(0, 8) + "_" + originalFileName;
 
         int insertCount = car_service.optionRegister(option_name, option_image_url);
+
         if(insertCount > 0) {
             try {
                 mFile.transferTo(new File(saveDir, option_image_url));
@@ -386,7 +478,7 @@ public class AdminConroller {
             }
             return "inc/close";
         } else {
-            model.addAttribute("msg","옵션 등록 실패");
+            model.addAttribute("msg", "옵션 등록 실패");
             return "inc/fail_back";
         }
     }
