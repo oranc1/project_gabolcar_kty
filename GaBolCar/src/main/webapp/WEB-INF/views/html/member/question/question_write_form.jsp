@@ -10,7 +10,7 @@
 
     <script src="${pageContext.request.contextPath }/resources/js/inc/jquery-3.7.0.js"></script>
     <title>1:1 문의 게시판</title>
-<!-- 브랜치 병합 되는지 확인 -->
+<!-- 브랜치 병합 되는지 확인 2-->
 </head>
 <body>
     <header>
