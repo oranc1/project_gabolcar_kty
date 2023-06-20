@@ -31,6 +31,7 @@
                                                 <option value="" selected>선택하세요</option>
                                                 <option value="reservation">예약</option>
                                                 <option value="reservation_cancel">예약 취소</option>
+                                                <option value="Refund">환불</option>
                                                 <option value="other">기타</option>
                                             </select>
                                         </div>
