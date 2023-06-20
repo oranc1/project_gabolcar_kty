@@ -19,7 +19,7 @@
     <div id="notice_cont">
         <section id="sec_con" class="inr">
             <h1 class="con_title">1:1 문의 게시판</h1>
-            <form action="submit_inquiry.jsp" method="post"> <!-- Use POST method and specify the submission URL -->
+            <form action="CarRegisterPro" name="CarRegisterPro" method="post" >
                 <section id="board_wrap">
                     <section id="board_list" class="notice">
                         <div class="wrapper">
@@ -27,7 +27,7 @@
                                 <ul class="list">
                                     <li>
                                         <div class="category"><label for="car_type">분류</label>  
-                                            <select name="category">
+                                            <select name="quetion_type">
                                                 <option value="" selected>선택하세요</option>
                                                 <option value="reservation">예약</option>
                                                 <option value="reservation_cancel">예약 취소</option>
@@ -35,16 +35,16 @@
                                             </select>
                                         </div>
                                         <div class="writer">
-                                            <input type="text" name="writer" placeholder="작성자" class="inputBox">
+                                            <input type="text" name="mem_name" id="mem_name" placeholder="작성자" class="inputBox">
                                         	<!-- 작성자 명은 DB로 불러오기 -->
                                         </div>
                                     </li>
                                     <li>
                                         <div class="password">
-                                            <input type="password" name="password" placeholder="비밀번호를 입력해주세요" class="inputBox">
+                                            <input type="password" name="quetion_pass" id="quetion_pass" placeholder="비밀번호를 입력해주세요" class="inputBox">
                                         </div>
                                         <div class="title">
-                                            <input type="text" name="title" placeholder="제목을 입력해주세요" class="inputBox">
+                                            <input type="text" name="quetion_subject" id="quetion_subject" placeholder="제목을 입력해주세요" class="inputBox">
                                         </div>
                                     </li>
                                 </ul>
