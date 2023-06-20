@@ -29,6 +29,8 @@ public class CarItemController {
 	@Autowired
 	CarItemService carItemService;
 	
+	@Autowired
+	CarService car_service;
 	// db 검색 없이 더미 데이터를 사용시
 	static final boolean DUMMY_DATA_FLAG = true;
 	
@@ -363,8 +365,10 @@ public class CarItemController {
 	
 	//차량 소개
 	@GetMapping("carInfoList")
-	public ModelAndView carInfo() {
+	public ModelAndView carInfo(Model model) {
 	List<Map<String, Object>> carInfoList = carItemService.carInfoList();
+	List<Map<String, Object>> optionList = car_service.optionList();
+	model.addAttribute("optionList",optionList);
 	return new ModelAndView("html/car_item/car_info_list","carInfoList",carInfoList);
 	}
 	

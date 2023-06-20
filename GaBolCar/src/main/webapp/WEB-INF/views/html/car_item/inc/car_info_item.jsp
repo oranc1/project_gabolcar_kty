@@ -47,7 +47,9 @@
             <div class="option-div">
               <h3>옵션</h3>
               <div class="custom-div">
-                <span>${car.option_name }</span>
+              	<c:forEach var="option" items="${optionList }">
+                <span>${option.option_name }</span>
+              	</c:forEach>
               </div>
             </div>
           </div>

@@ -218,6 +218,9 @@ public class AdminConroller {
 		model.addAttribute("car",map);
 		List<Map<String, Object>> brcList = brc_service.brcList();
 		model.addAttribute("brcList",brcList);
+		// 0620 차량수정으로 가져갈 optionList
+		List<Map<String, Object>> optionList = car_service.optionList();
+		model.addAttribute("optionList",optionList);
 		return "html/admin/car_update";
 	}
 	
