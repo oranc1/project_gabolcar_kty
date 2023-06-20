@@ -27,7 +27,7 @@
                                 <ul class="list">
                                     <li>
                                         <div class="category"><label for="car_type">분류</label>  
-                                            <select name="quetion_type">
+                                            <select name="qst_type" id="qst_type">
                                                 <option value="" selected>선택하세요</option>
                                                 <option value="reservation">예약</option>
                                                 <option value="reservation_cancel">예약 취소</option>
@@ -41,16 +41,16 @@
                                     </li>
                                     <li>
                                         <div class="password">
-                                            <input type="password" name="quetion_pass" id="quetion_pass" placeholder="비밀번호를 입력해주세요" class="inputBox">
+                                            <input type="password" name="qst_pass" id="qst_pass" placeholder="비밀번호를 입력해주세요" class="inputBox">
                                         </div>
                                         <div class="title">
-                                            <input type="text" name="quetion_subject" id="quetion_subject" placeholder="제목을 입력해주세요" class="inputBox">
+                                            <input type="text" name="qst_subject" id="qst_subject" placeholder="제목을 입력해주세요" class="inputBox">
                                         </div>
                                     </li>
                                 </ul>
                                 <div class="write_cont">
                                     <p>
-                                        <textarea name="content" rows="" cols="" class="inputBox" placeholder="내용을 입력해주세요"></textarea>
+                                        <textarea name="qst_content" id="qst_content" rows="" cols="" class="inputBox" placeholder="내용을 입력해주세요"></textarea>
                                     </p>
                                 </div>
                                 <div class="mod_box">
